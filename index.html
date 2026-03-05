@@ -17,7 +17,7 @@
       <h2 id="font-load-title">1. フォント読み込み</h2>
       <label id="drop-zone" class="drop-zone" for="font-file">
         <input id="font-file" type="file" accept=".ttf,.otf,.woff,.woff2" />
-        <span>ここにフォントファイルをドロップ、またはクリックして選択</span>
+        <span>ここにフォントファイルをドロップ、またはクリックして選択 ( .ttf,.otf,.woff,.woff2 )</span>
       </label>
       <div class="font-meta">
         <p><strong>状態:</strong> <span id="font-status">未読み込み</span></p>
@@ -27,7 +27,7 @@
     </section>
 
     <section class="panel" aria-labelledby="text-title">
-      <h2 id="text-title">2. 文字入力</h2>
+      <h2 id="text-title">2. 画像にしたい文字を入力</h2>
       <label for="text-input">描画文字列（複数行可）</label>
       <textarea id="text-input" rows="6" maxlength="2000" placeholder="ここに文字を入力"></textarea>
       <p class="muted"><span id="char-count">0</span> / 2000 文字</p>
@@ -35,7 +35,7 @@
 
     <section class="panel" aria-labelledby="options-title">
       <h2 id="options-title">3. 描画オプション</h2>
-      <div class="grid two">
+      <div class="grid two options-top-grid">
         <fieldset>
           <legend>色</legend>
           <div class="radio-row mode-row">
@@ -45,26 +45,47 @@
           </div>
 
           <div id="solid-options">
-            <div class="inline-row">
-              <label for="solid-color">色</label>
-              <input id="solid-color" type="color" value="#1f2937" />
-              <label for="solid-alpha">透明度</label>
-              <input id="solid-alpha" type="number" min="0" max="100" value="100" />
+            <div class="split-two-row">
+              <div class="split-item">
+                <label for="solid-color">色</label>
+                <input id="solid-color" type="color" value="#1f2937" />
+              </div>
+              <div class="split-item">
+                <label for="solid-alpha">透明度</label>
+                <div class="control-row compact mini">
+                  <input id="solid-alpha" type="number" min="0" max="100" value="100" />
+                  <input id="solid-alpha-range" type="range" min="0" max="100" value="100" />
+                </div>
+              </div>
             </div>
           </div>
 
           <div id="gradient-options" class="hidden">
-            <div class="inline-row">
-              <label for="grad-color-1">色1</label>
-              <input id="grad-color-1" type="color" value="#f97316" />
-              <label for="grad-alpha-1">透明度</label>
-              <input id="grad-alpha-1" type="number" min="0" max="100" value="100" />
+            <div class="split-two-row">
+              <div class="split-item">
+                <label for="grad-color-1">色1</label>
+                <input id="grad-color-1" type="color" value="#f97316" />
+              </div>
+              <div class="split-item">
+                <label for="grad-alpha-1">透明度</label>
+                <div class="control-row compact mini">
+                  <input id="grad-alpha-1" type="number" min="0" max="100" value="100" />
+                  <input id="grad-alpha-1-range" type="range" min="0" max="100" value="100" />
+                </div>
+              </div>
             </div>
-            <div class="inline-row">
-              <label for="grad-color-2">色2</label>
-              <input id="grad-color-2" type="color" value="#2563eb" />
-              <label for="grad-alpha-2">透明度</label>
-              <input id="grad-alpha-2" type="number" min="0" max="100" value="100" />
+            <div class="split-two-row">
+              <div class="split-item">
+                <label for="grad-color-2">色2</label>
+                <input id="grad-color-2" type="color" value="#2563eb" />
+              </div>
+              <div class="split-item">
+                <label for="grad-alpha-2">透明度</label>
+                <div class="control-row compact mini">
+                  <input id="grad-alpha-2" type="number" min="0" max="100" value="100" />
+                  <input id="grad-alpha-2-range" type="range" min="0" max="100" value="100" />
+                </div>
+              </div>
             </div>
             <div class="radio-row">
               <span class="row-label">グラデーションの方向</span>
@@ -111,60 +132,93 @@
             <input id="outline-width" type="number" min="0" max="50" value="6" />
             <input id="outline-width-range" type="range" min="0" max="50" value="6" />
           </div>
-          <div class="inline-row">
-            <label for="outline-color">色</label>
-            <input id="outline-color" type="color" value="#111111" />
-            <label for="outline-alpha">透明度</label>
-            <input id="outline-alpha" type="number" min="0" max="100" value="100" />
+          <div class="split-two-row">
+            <div class="split-item">
+              <label for="outline-color">色</label>
+              <input id="outline-color" type="color" value="#111111" />
+            </div>
+            <div class="split-item">
+              <label for="outline-alpha">透明度</label>
+              <div class="control-row compact mini">
+                <input id="outline-alpha" type="number" min="0" max="100" value="100" />
+                <input id="outline-alpha-range" type="range" min="0" max="100" value="100" />
+              </div>
+            </div>
           </div>
         </fieldset>
 
         <fieldset>
           <legend>影</legend>
           <label class="inline"><input id="shadow-enabled" type="checkbox" /> 有効</label>
-          <div class="inline-row">
-            <label for="shadow-color">色</label>
-            <input id="shadow-color" type="color" value="#000000" />
-            <label for="shadow-alpha">濃さ</label>
-            <input id="shadow-alpha" type="number" min="0" max="100" value="45" />
+          <div class="split-two-row">
+            <div class="split-item">
+              <label for="shadow-color">色</label>
+              <input id="shadow-color" type="color" value="#000000" />
+            </div>
+            <div class="split-item">
+              <label for="shadow-alpha">濃さ</label>
+              <div class="control-row compact mini">
+                <input id="shadow-alpha" type="number" min="0" max="100" value="45" />
+                <input id="shadow-alpha-range" type="range" min="0" max="100" value="45" />
+              </div>
+            </div>
           </div>
 
-          <div class="inline-row">
-            <label for="shadow-blur">ぼかし</label>
-            <input id="shadow-blur" type="number" min="0" max="100" value="12" />
-            <label for="shadow-offset-x">ずらしX</label>
-            <input id="shadow-offset-x" type="number" min="-200" max="200" value="4" />
-            <label for="shadow-offset-y">ずらしY</label>
-            <input id="shadow-offset-y" type="number" min="-200" max="200" value="6" />
+          <div class="compact-three-row">
+            <div class="compact-item">
+              <label for="shadow-blur">ぼかし</label>
+              <div class="control-row compact">
+                <input id="shadow-blur" type="number" min="0" max="100" value="12" />
+                <input id="shadow-blur-range" type="range" min="0" max="100" value="12" />
+              </div>
+            </div>
+            <div class="compact-item">
+              <label for="shadow-offset-x">ずらしX</label>
+              <div class="control-row compact">
+                <input id="shadow-offset-x" type="number" min="-200" max="200" value="4" />
+                <input id="shadow-offset-x-range" type="range" min="-200" max="200" value="4" />
+              </div>
+            </div>
+            <div class="compact-item">
+              <label for="shadow-offset-y">ずらしY</label>
+              <div class="control-row compact">
+                <input id="shadow-offset-y" type="number" min="-200" max="200" value="6" />
+                <input id="shadow-offset-y-range" type="range" min="-200" max="200" value="6" />
+              </div>
+            </div>
           </div>
         </fieldset>
       </div>
 
-      <div class="actions">
-        <button id="preview-btn" type="button">プレビュー更新</button>
-        <span id="status-message" class="status"></span>
-      </div>
     </section>
 
     <section class="panel" aria-labelledby="preview-title">
-      <h2 id="preview-title">4. プレビュー</h2>
+      <div class="section-head">
+        <h2 id="preview-title">4. プレビュー</h2>
+        <div class="actions preview-actions">
+          <span id="status-message" class="status"></span>
+          <button id="preview-btn" type="button">プレビュー更新</button>
+        </div>
+      </div>
       <div class="preview-wrap">
         <canvas id="preview-canvas" width="640" height="320" aria-label="プレビュー"></canvas>
       </div>
     </section>
 
-    <section class="panel" aria-labelledby="download-title">
-      <h2 id="download-title">5. ダウンロード</h2>
-      <button id="download-btn" type="button">透過PNGをダウンロード</button>
-    </section>
-
     <section class="panel" aria-labelledby="ad-title">
-      <h2 id="ad-title">6. 広告枠</h2>
+      <h2 id="ad-title">【PR】広告</h2>
       <div class="ad-slots">
-        <div class="ad-slot">広告枠（a8.net想定）</div>
-        <div class="ad-slot">広告枠（任意）</div>
+        <div class="ad-slot">広告枠</div>
+        <div class="ad-slot">広告枠</div>
       </div>
     </section>
+
+    <section class="panel" aria-labelledby="download-title">
+      <h2 id="download-title">5. ダウンロード</h2>
+      <button id="download-btn"button">透過PNGをダウンロード</button>
+    </section>
+
+
 
     <footer class="panel small">
       <ul>

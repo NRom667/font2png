@@ -49,6 +49,18 @@ h1 {
   margin-bottom: 8px;
 }
 
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
 .muted {
   color: var(--muted);
   margin: 8px 0 0;
@@ -61,6 +73,10 @@ h1 {
 
 .grid.two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.options-top-grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
 }
 
 fieldset {
@@ -83,7 +99,7 @@ label {
 
 .inline-row {
   display: grid;
-  grid-template-columns: auto 70px auto 86px;
+  grid-template-columns: max-content 64px max-content minmax(0, 1fr);
   gap: 8px;
   align-items: center;
   margin-top: 8px;
@@ -99,6 +115,7 @@ label {
 
 .mode-row {
   margin-bottom: 12px;
+  flex-wrap: nowrap;
 }
 
 .row-label {
@@ -130,6 +147,25 @@ label {
   gap: 10px;
 }
 
+.compact-three-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.split-two-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: end;
+  margin-top: 8px;
+}
+
+.split-item label {
+  margin-top: 2px;
+}
+
 .compact-item label {
   margin-top: 2px;
 }
@@ -137,6 +173,26 @@ label {
 .control-row.compact {
   grid-template-columns: 74px minmax(0, 1fr);
   margin-bottom: 0;
+}
+
+.control-row.compact.mini {
+  grid-template-columns: 68px minmax(80px, 130px);
+  justify-self: start;
+  width: 100%;
+}
+
+.control-row.compact.mini input[type="number"] {
+  justify-self: start;
+}
+
+.control-row.compact.mini input[type="range"] {
+  min-width: 0;
+  width: 100%;
+}
+
+.mode-row .inline {
+  margin: 0;
+  white-space: nowrap;
 }
 
 label.inline {
@@ -243,6 +299,11 @@ button:disabled {
   width: auto;
 }
 
+.preview-actions {
+  margin-top: 0;
+  margin-left: auto;
+}
+
 .status {
   min-height: 22px;
   color: var(--muted);
@@ -280,6 +341,7 @@ ul {
 
 @media (max-width: 860px) {
   .grid.two,
+  .options-top-grid,
   .ad-slots {
     grid-template-columns: 1fr;
   }
@@ -288,13 +350,34 @@ ul {
     grid-template-columns: auto 1fr;
   }
 
+  .inline-row .control-row.compact.mini {
+    grid-column: 1 / -1;
+  }
+
   .compact-two-row {
+    grid-template-columns: 1fr;
+  }
+
+  .compact-three-row {
+    grid-template-columns: 1fr;
+  }
+
+  .split-two-row {
     grid-template-columns: 1fr;
   }
 
   .actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .preview-actions {
+    margin-left: 0;
   }
 
   .actions button {

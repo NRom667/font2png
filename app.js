@@ -24,10 +24,13 @@
     gradientOptions: document.getElementById("gradient-options"),
     solidColor: document.getElementById("solid-color"),
     solidAlpha: document.getElementById("solid-alpha"),
+    solidAlphaRange: document.getElementById("solid-alpha-range"),
     gradColor1: document.getElementById("grad-color-1"),
     gradAlpha1: document.getElementById("grad-alpha-1"),
+    gradAlpha1Range: document.getElementById("grad-alpha-1-range"),
     gradColor2: document.getElementById("grad-color-2"),
     gradAlpha2: document.getElementById("grad-alpha-2"),
+    gradAlpha2Range: document.getElementById("grad-alpha-2-range"),
     fontSize: document.getElementById("font-size"),
     fontSizeRange: document.getElementById("font-size-range"),
     lineHeight: document.getElementById("line-height"),
@@ -39,12 +42,17 @@
     outlineWidthRange: document.getElementById("outline-width-range"),
     outlineColor: document.getElementById("outline-color"),
     outlineAlpha: document.getElementById("outline-alpha"),
+    outlineAlphaRange: document.getElementById("outline-alpha-range"),
     shadowEnabled: document.getElementById("shadow-enabled"),
     shadowColor: document.getElementById("shadow-color"),
     shadowAlpha: document.getElementById("shadow-alpha"),
+    shadowAlphaRange: document.getElementById("shadow-alpha-range"),
     shadowBlur: document.getElementById("shadow-blur"),
+    shadowBlurRange: document.getElementById("shadow-blur-range"),
     shadowOffsetX: document.getElementById("shadow-offset-x"),
+    shadowOffsetXRange: document.getElementById("shadow-offset-x-range"),
     shadowOffsetY: document.getElementById("shadow-offset-y"),
+    shadowOffsetYRange: document.getElementById("shadow-offset-y-range"),
     previewBtn: document.getElementById("preview-btn"),
     downloadBtn: document.getElementById("download-btn"),
     previewCanvas: document.getElementById("preview-canvas"),
@@ -144,8 +152,11 @@
     const colorMode =
       document.querySelector('input[name="color-mode"]:checked')?.value || "solid";
     const solidAlpha = clampNumber(el.solidAlpha, 0, 100, 100, "単色透明度", warnings, true);
+    el.solidAlphaRange.value = String(solidAlpha);
     const gradAlpha1 = clampNumber(el.gradAlpha1, 0, 100, 100, "グラデーション色1透明度", warnings, true);
+    el.gradAlpha1Range.value = String(gradAlpha1);
     const gradAlpha2 = clampNumber(el.gradAlpha2, 0, 100, 100, "グラデーション色2透明度", warnings, true);
+    el.gradAlpha2Range.value = String(gradAlpha2);
 
     const fontSize = clampNumber(el.fontSize, 8, 512, 128, "フォントサイズ", warnings, true);
     el.fontSizeRange.value = String(fontSize);
@@ -158,12 +169,17 @@
     const outlineWidth = clampNumber(el.outlineWidth, 0, 50, 0, "縁取り太さ", warnings, true);
     el.outlineWidthRange.value = String(outlineWidth);
     const outlineAlpha = clampNumber(el.outlineAlpha, 0, 100, 100, "縁取り透明度", warnings, true);
+    el.outlineAlphaRange.value = String(outlineAlpha);
 
     const shadowEnabled = el.shadowEnabled.checked;
     const shadowAlpha = clampNumber(el.shadowAlpha, 0, 100, 45, "影の濃さ", warnings, true);
+    el.shadowAlphaRange.value = String(shadowAlpha);
     const shadowBlur = clampNumber(el.shadowBlur, 0, 100, 12, "影のぼかし", warnings, true);
+    el.shadowBlurRange.value = String(shadowBlur);
     const shadowOffsetX = clampNumber(el.shadowOffsetX, -200, 200, 0, "影Xずらし", warnings, true);
+    el.shadowOffsetXRange.value = String(shadowOffsetX);
     const shadowOffsetY = clampNumber(el.shadowOffsetY, -200, 200, 0, "影Yずらし", warnings, true);
+    el.shadowOffsetYRange.value = String(shadowOffsetY);
 
     return {
       warnings,
@@ -550,23 +566,23 @@
     bindPair(el.lineHeight, el.lineHeightRange);
     bindPair(el.padding, el.paddingRange);
     bindPair(el.outlineWidth, el.outlineWidthRange);
+    bindPair(el.solidAlpha, el.solidAlphaRange);
+    bindPair(el.gradAlpha1, el.gradAlpha1Range);
+    bindPair(el.gradAlpha2, el.gradAlpha2Range);
+    bindPair(el.outlineAlpha, el.outlineAlphaRange);
+    bindPair(el.shadowAlpha, el.shadowAlphaRange);
+    bindPair(el.shadowBlur, el.shadowBlurRange);
+    bindPair(el.shadowOffsetX, el.shadowOffsetXRange);
+    bindPair(el.shadowOffsetY, el.shadowOffsetYRange);
 
     const previewInputs = [
       el.solidColor,
-      el.solidAlpha,
       el.gradColor1,
-      el.gradAlpha1,
       el.gradColor2,
-      el.gradAlpha2,
       el.outlineEnabled,
       el.outlineColor,
-      el.outlineAlpha,
       el.shadowEnabled,
       el.shadowColor,
-      el.shadowAlpha,
-      el.shadowBlur,
-      el.shadowOffsetX,
-      el.shadowOffsetY,
     ];
 
     previewInputs.forEach((input) => {
