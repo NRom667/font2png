@@ -1,0 +1,151 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>テキスト画像化ツール</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="panel">
+      <h1>テキスト画像化ツール</h1>
+      <p class="muted">手元のフォントで文字を描画し、透過PNGを保存できます。</p>
+    </header>
+
+    <section class="panel" aria-labelledby="font-load-title">
+      <h2 id="font-load-title">1. フォント読み込み</h2>
+      <label id="drop-zone" class="drop-zone" for="font-file">
+        <input id="font-file" type="file" accept=".ttf,.otf,.woff,.woff2" />
+        <span>ここにフォントファイルをドロップ、またはクリックして選択</span>
+      </label>
+      <div class="font-meta">
+        <p><strong>状態:</strong> <span id="font-status">未読み込み</span></p>
+        <p><strong>ファイル名:</strong> <span id="font-filename">-</span></p>
+        <p><strong>フォント名:</strong> <span id="font-family">-</span></p>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="text-title">
+      <h2 id="text-title">2. 文字入力</h2>
+      <label for="text-input">描画文字列（複数行可）</label>
+      <textarea id="text-input" rows="6" maxlength="2000" placeholder="ここに文字を入力"></textarea>
+      <p class="muted"><span id="char-count">0</span> / 2000 文字</p>
+    </section>
+
+    <section class="panel" aria-labelledby="options-title">
+      <h2 id="options-title">3. 描画オプション</h2>
+      <div class="grid two">
+        <fieldset>
+          <legend>色</legend>
+          <label for="color-mode">モード</label>
+          <select id="color-mode">
+            <option value="solid">単色</option>
+            <option value="gradient">2色グラデーション</option>
+          </select>
+
+          <div id="solid-options">
+            <label for="solid-color">色</label>
+            <input id="solid-color" type="color" value="#1f2937" />
+            <label for="solid-alpha">透明度（0-100）</label>
+            <input id="solid-alpha" type="number" min="0" max="100" value="100" />
+          </div>
+
+          <div id="gradient-options" class="hidden">
+            <label for="grad-color-1">色1</label>
+            <input id="grad-color-1" type="color" value="#f97316" />
+            <label for="grad-alpha-1">色1 透明度（0-100）</label>
+            <input id="grad-alpha-1" type="number" min="0" max="100" value="100" />
+            <label for="grad-color-2">色2</label>
+            <input id="grad-color-2" type="color" value="#2563eb" />
+            <label for="grad-alpha-2">色2 透明度（0-100）</label>
+            <input id="grad-alpha-2" type="number" min="0" max="100" value="100" />
+            <label for="grad-direction">方向</label>
+            <select id="grad-direction">
+              <option value="top-bottom">上→下</option>
+              <option value="bottom-top">下→上</option>
+              <option value="left-right">左→右</option>
+              <option value="right-left">右→左</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>サイズ</legend>
+          <label for="font-size">フォントサイズ(px)</label>
+          <input id="font-size" type="number" min="8" max="512" value="128" />
+          <input id="font-size-range" type="range" min="8" max="512" value="128" />
+          <label for="line-height">行間倍率（0.8-3.0）</label>
+          <input id="line-height" type="number" min="0.8" max="3" step="0.1" value="1.2" />
+          <label for="padding">余白(px)</label>
+          <input id="padding" type="number" min="0" max="200" value="10" />
+        </fieldset>
+      </div>
+
+      <div class="grid two">
+        <fieldset>
+          <legend>縁取り</legend>
+          <label class="inline"><input id="outline-enabled" type="checkbox" /> 有効</label>
+          <label for="outline-width">太さ（0-50）</label>
+          <input id="outline-width" type="number" min="0" max="50" value="6" />
+          <label for="outline-color">色</label>
+          <input id="outline-color" type="color" value="#111111" />
+          <label for="outline-alpha">透明度（0-100）</label>
+          <input id="outline-alpha" type="number" min="0" max="100" value="100" />
+        </fieldset>
+
+        <fieldset>
+          <legend>影</legend>
+          <label class="inline"><input id="shadow-enabled" type="checkbox" /> 有効</label>
+          <label for="shadow-color">色</label>
+          <input id="shadow-color" type="color" value="#000000" />
+          <label for="shadow-alpha">濃さ（0-100）</label>
+          <input id="shadow-alpha" type="number" min="0" max="100" value="45" />
+          <label for="shadow-blur">ぼかし（0-100）</label>
+          <input id="shadow-blur" type="number" min="0" max="100" value="12" />
+          <label for="shadow-offset-x">ずらしX（-200〜200）</label>
+          <input id="shadow-offset-x" type="number" min="-200" max="200" value="4" />
+          <label for="shadow-offset-y">ずらしY（-200〜200）</label>
+          <input id="shadow-offset-y" type="number" min="-200" max="200" value="6" />
+        </fieldset>
+      </div>
+
+      <div class="actions">
+        <button id="preview-btn" type="button">プレビュー更新</button>
+        <span id="status-message" class="status"></span>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="preview-title">
+      <h2 id="preview-title">4. プレビュー</h2>
+      <div class="preview-wrap">
+        <canvas id="preview-canvas" width="640" height="320" aria-label="プレビュー"></canvas>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="download-title">
+      <h2 id="download-title">5. ダウンロード</h2>
+      <button id="download-btn" type="button">透過PNGをダウンロード</button>
+    </section>
+
+    <section class="panel" aria-labelledby="ad-title">
+      <h2 id="ad-title">6. 広告枠</h2>
+      <div class="ad-slots">
+        <div class="ad-slot">広告枠（a8.net想定）</div>
+        <div class="ad-slot">広告枠（任意）</div>
+      </div>
+    </section>
+
+    <footer class="panel small">
+      <ul>
+        <li>フォントファイルは端末内で処理し、サーバーへ送信しません。</li>
+        <li>フォントの利用条件（商用利用など）は利用者自身で確認してください。</li>
+        <li>本ツールは画像生成を補助するもので、フォントの権利を保証しません。</li>
+        <li>このページは広告を表示します。</li>
+      </ul>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
