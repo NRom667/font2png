@@ -15,7 +15,6 @@
     fileInput: document.getElementById("font-file"),
     fontStatus: document.getElementById("font-status"),
     fontFilename: document.getElementById("font-filename"),
-    fontFamily: document.getElementById("font-family"),
     textInput: document.getElementById("text-input"),
     charCount: document.getElementById("char-count"),
     colorModeRadios: document.querySelectorAll('input[name="color-mode"]'),
@@ -134,7 +133,6 @@
       state.fontStatus = "成功";
       el.fontStatus.textContent = "成功";
       el.fontFilename.textContent = file.name;
-      el.fontFamily.textContent = family;
       setStatus("フォントを読み込みました。", false);
       schedulePreview();
     } catch (error) {
