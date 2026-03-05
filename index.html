@@ -38,47 +38,67 @@
       <div class="grid two">
         <fieldset>
           <legend>色</legend>
-          <label for="color-mode">モード</label>
-          <select id="color-mode">
-            <option value="solid">単色</option>
-            <option value="gradient">2色グラデーション</option>
-          </select>
+          <div class="radio-row mode-row">
+            <span class="row-label">モード</span>
+            <label class="inline"><input type="radio" name="color-mode" value="solid" checked /> 単色</label>
+            <label class="inline"><input type="radio" name="color-mode" value="gradient" /> 2色グラデーション</label>
+          </div>
 
           <div id="solid-options">
-            <label for="solid-color">色</label>
-            <input id="solid-color" type="color" value="#1f2937" />
-            <label for="solid-alpha">透明度（0-100）</label>
-            <input id="solid-alpha" type="number" min="0" max="100" value="100" />
+            <div class="inline-row">
+              <label for="solid-color">色</label>
+              <input id="solid-color" type="color" value="#1f2937" />
+              <label for="solid-alpha">透明度</label>
+              <input id="solid-alpha" type="number" min="0" max="100" value="100" />
+            </div>
           </div>
 
           <div id="gradient-options" class="hidden">
-            <label for="grad-color-1">色1</label>
-            <input id="grad-color-1" type="color" value="#f97316" />
-            <label for="grad-alpha-1">色1 透明度（0-100）</label>
-            <input id="grad-alpha-1" type="number" min="0" max="100" value="100" />
-            <label for="grad-color-2">色2</label>
-            <input id="grad-color-2" type="color" value="#2563eb" />
-            <label for="grad-alpha-2">色2 透明度（0-100）</label>
-            <input id="grad-alpha-2" type="number" min="0" max="100" value="100" />
-            <label for="grad-direction">方向</label>
-            <select id="grad-direction">
-              <option value="top-bottom">上→下</option>
-              <option value="bottom-top">下→上</option>
-              <option value="left-right">左→右</option>
-              <option value="right-left">右→左</option>
-            </select>
+            <div class="inline-row">
+              <label for="grad-color-1">色1</label>
+              <input id="grad-color-1" type="color" value="#f97316" />
+              <label for="grad-alpha-1">透明度</label>
+              <input id="grad-alpha-1" type="number" min="0" max="100" value="100" />
+            </div>
+            <div class="inline-row">
+              <label for="grad-color-2">色2</label>
+              <input id="grad-color-2" type="color" value="#2563eb" />
+              <label for="grad-alpha-2">透明度</label>
+              <input id="grad-alpha-2" type="number" min="0" max="100" value="100" />
+            </div>
+            <div class="radio-row">
+              <span class="row-label">グラデーションの方向</span>
+              <label class="inline"><input type="radio" name="grad-direction" value="top-bottom" checked /> ↓</label>
+              <label class="inline"><input type="radio" name="grad-direction" value="bottom-top" /> ↑</label>
+              <label class="inline"><input type="radio" name="grad-direction" value="left-right" /> →</label>
+              <label class="inline"><input type="radio" name="grad-direction" value="right-left" /> ←</label>
+            </div>
           </div>
         </fieldset>
 
         <fieldset>
           <legend>サイズ</legend>
           <label for="font-size">フォントサイズ(px)</label>
-          <input id="font-size" type="number" min="8" max="512" value="128" />
-          <input id="font-size-range" type="range" min="8" max="512" value="128" />
-          <label for="line-height">行間倍率（0.8-3.0）</label>
-          <input id="line-height" type="number" min="0.8" max="3" step="0.1" value="1.2" />
-          <label for="padding">余白(px)</label>
-          <input id="padding" type="number" min="0" max="200" value="10" />
+          <div class="control-row">
+            <input id="font-size" type="number" min="8" max="512" value="128" />
+            <input id="font-size-range" type="range" min="8" max="512" value="128" />
+          </div>
+          <div class="compact-two-row">
+            <div class="compact-item">
+              <label for="line-height">行間倍率</label>
+              <div class="control-row compact">
+                <input id="line-height" type="number" min="0.8" max="3" step="0.1" value="1.2" />
+                <input id="line-height-range" type="range" min="0.8" max="3" step="0.1" value="1.2" />
+              </div>
+            </div>
+            <div class="compact-item">
+              <label for="padding">余白(px)</label>
+              <div class="control-row compact">
+                <input id="padding" type="number" min="0" max="200" value="10" />
+                <input id="padding-range" type="range" min="0" max="200" value="10" />
+              </div>
+            </div>
+          </div>
         </fieldset>
       </div>
 
@@ -87,26 +107,36 @@
           <legend>縁取り</legend>
           <label class="inline"><input id="outline-enabled" type="checkbox" /> 有効</label>
           <label for="outline-width">太さ（0-50）</label>
-          <input id="outline-width" type="number" min="0" max="50" value="6" />
-          <label for="outline-color">色</label>
-          <input id="outline-color" type="color" value="#111111" />
-          <label for="outline-alpha">透明度（0-100）</label>
-          <input id="outline-alpha" type="number" min="0" max="100" value="100" />
+          <div class="control-row">
+            <input id="outline-width" type="number" min="0" max="50" value="6" />
+            <input id="outline-width-range" type="range" min="0" max="50" value="6" />
+          </div>
+          <div class="inline-row">
+            <label for="outline-color">色</label>
+            <input id="outline-color" type="color" value="#111111" />
+            <label for="outline-alpha">透明度</label>
+            <input id="outline-alpha" type="number" min="0" max="100" value="100" />
+          </div>
         </fieldset>
 
         <fieldset>
           <legend>影</legend>
           <label class="inline"><input id="shadow-enabled" type="checkbox" /> 有効</label>
-          <label for="shadow-color">色</label>
-          <input id="shadow-color" type="color" value="#000000" />
-          <label for="shadow-alpha">濃さ（0-100）</label>
-          <input id="shadow-alpha" type="number" min="0" max="100" value="45" />
-          <label for="shadow-blur">ぼかし（0-100）</label>
-          <input id="shadow-blur" type="number" min="0" max="100" value="12" />
-          <label for="shadow-offset-x">ずらしX（-200〜200）</label>
-          <input id="shadow-offset-x" type="number" min="-200" max="200" value="4" />
-          <label for="shadow-offset-y">ずらしY（-200〜200）</label>
-          <input id="shadow-offset-y" type="number" min="-200" max="200" value="6" />
+          <div class="inline-row">
+            <label for="shadow-color">色</label>
+            <input id="shadow-color" type="color" value="#000000" />
+            <label for="shadow-alpha">濃さ</label>
+            <input id="shadow-alpha" type="number" min="0" max="100" value="45" />
+          </div>
+
+          <div class="inline-row">
+            <label for="shadow-blur">ぼかし</label>
+            <input id="shadow-blur" type="number" min="0" max="100" value="12" />
+            <label for="shadow-offset-x">ずらしX</label>
+            <input id="shadow-offset-x" type="number" min="-200" max="200" value="4" />
+            <label for="shadow-offset-y">ずらしY</label>
+            <input id="shadow-offset-y" type="number" min="-200" max="200" value="6" />
+          </div>
         </fieldset>
       </div>
 

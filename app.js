@@ -18,7 +18,8 @@
     fontFamily: document.getElementById("font-family"),
     textInput: document.getElementById("text-input"),
     charCount: document.getElementById("char-count"),
-    colorMode: document.getElementById("color-mode"),
+    colorModeRadios: document.querySelectorAll('input[name="color-mode"]'),
+    gradDirectionRadios: document.querySelectorAll('input[name="grad-direction"]'),
     solidOptions: document.getElementById("solid-options"),
     gradientOptions: document.getElementById("gradient-options"),
     solidColor: document.getElementById("solid-color"),
@@ -27,13 +28,15 @@
     gradAlpha1: document.getElementById("grad-alpha-1"),
     gradColor2: document.getElementById("grad-color-2"),
     gradAlpha2: document.getElementById("grad-alpha-2"),
-    gradDirection: document.getElementById("grad-direction"),
     fontSize: document.getElementById("font-size"),
     fontSizeRange: document.getElementById("font-size-range"),
     lineHeight: document.getElementById("line-height"),
+    lineHeightRange: document.getElementById("line-height-range"),
     padding: document.getElementById("padding"),
+    paddingRange: document.getElementById("padding-range"),
     outlineEnabled: document.getElementById("outline-enabled"),
     outlineWidth: document.getElementById("outline-width"),
+    outlineWidthRange: document.getElementById("outline-width-range"),
     outlineColor: document.getElementById("outline-color"),
     outlineAlpha: document.getElementById("outline-alpha"),
     shadowEnabled: document.getElementById("shadow-enabled"),
@@ -138,7 +141,8 @@
   function collectOptions() {
     const warnings = [];
 
-    const colorMode = el.colorMode.value;
+    const colorMode =
+      document.querySelector('input[name="color-mode"]:checked')?.value || "solid";
     const solidAlpha = clampNumber(el.solidAlpha, 0, 100, 100, "単色透明度", warnings, true);
     const gradAlpha1 = clampNumber(el.gradAlpha1, 0, 100, 100, "グラデーション色1透明度", warnings, true);
     const gradAlpha2 = clampNumber(el.gradAlpha2, 0, 100, 100, "グラデーション色2透明度", warnings, true);
@@ -146,10 +150,13 @@
     const fontSize = clampNumber(el.fontSize, 8, 512, 128, "フォントサイズ", warnings, true);
     el.fontSizeRange.value = String(fontSize);
     const lineHeight = clampNumber(el.lineHeight, 0.8, 3, 1.2, "行間倍率", warnings, false);
+    el.lineHeightRange.value = String(lineHeight);
     const padding = clampNumber(el.padding, 0, 200, 10, "余白", warnings, true);
+    el.paddingRange.value = String(padding);
 
     const outlineEnabled = el.outlineEnabled.checked;
     const outlineWidth = clampNumber(el.outlineWidth, 0, 50, 0, "縁取り太さ", warnings, true);
+    el.outlineWidthRange.value = String(outlineWidth);
     const outlineAlpha = clampNumber(el.outlineAlpha, 0, 100, 100, "縁取り透明度", warnings, true);
 
     const shadowEnabled = el.shadowEnabled.checked;
@@ -167,7 +174,8 @@
       gradAlpha1,
       gradColor2: el.gradColor2.value,
       gradAlpha2,
-      gradDirection: el.gradDirection.value,
+      gradDirection:
+        document.querySelector('input[name="grad-direction"]:checked')?.value || "top-bottom",
       fontSize,
       lineHeight,
       padding,
@@ -469,7 +477,8 @@
   }
 
   function syncColorMode() {
-    const gradient = el.colorMode.value === "gradient";
+    const gradient =
+      (document.querySelector('input[name="color-mode"]:checked')?.value || "solid") === "gradient";
     el.gradientOptions.classList.toggle("hidden", !gradient);
     el.solidOptions.classList.toggle("hidden", gradient);
     schedulePreview();
@@ -519,12 +528,28 @@
       }
     });
 
-    el.colorMode.addEventListener("change", syncColorMode);
-
-    el.fontSizeRange.addEventListener("input", () => {
-      el.fontSize.value = el.fontSizeRange.value;
-      schedulePreview();
+    el.colorModeRadios.forEach((radio) => {
+      radio.addEventListener("change", syncColorMode);
     });
+    el.gradDirectionRadios.forEach((radio) => {
+      radio.addEventListener("change", schedulePreview);
+    });
+
+    function bindPair(numberEl, rangeEl) {
+      rangeEl.addEventListener("input", () => {
+        numberEl.value = rangeEl.value;
+        schedulePreview();
+      });
+      numberEl.addEventListener("input", () => {
+        rangeEl.value = numberEl.value;
+        schedulePreview();
+      });
+    }
+
+    bindPair(el.fontSize, el.fontSizeRange);
+    bindPair(el.lineHeight, el.lineHeightRange);
+    bindPair(el.padding, el.paddingRange);
+    bindPair(el.outlineWidth, el.outlineWidthRange);
 
     const previewInputs = [
       el.solidColor,
@@ -533,12 +558,7 @@
       el.gradAlpha1,
       el.gradColor2,
       el.gradAlpha2,
-      el.gradDirection,
-      el.fontSize,
-      el.lineHeight,
-      el.padding,
       el.outlineEnabled,
-      el.outlineWidth,
       el.outlineColor,
       el.outlineAlpha,
       el.shadowEnabled,
