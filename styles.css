@@ -47,6 +47,7 @@ h2 {
 
 h1 {
   margin-bottom: 8px;
+  font-size: 300%;
 }
 
 .section-head {
@@ -63,7 +64,7 @@ h1 {
 
 .muted {
   color: var(--muted);
-  margin: 8px 0 0;
+  margin: 2px 0 0;
 }
 
 .grid {
