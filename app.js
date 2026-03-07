@@ -2,10 +2,11 @@
   "use strict";
 
   const MAX_CHARS = 2000;
+  const DEFAULT_FONT_STACK = "\"Yu Gothic UI\", \"Yu Gothic\", \"Hiragino Kaku Gothic ProN\", \"Meiryo\", sans-serif";
   const state = {
     fontFamily: "",
     fontFileName: "",
-    fontStatus: "未読み込み",
+    fontStatus: "未読み込み（デフォルトのフォントで描画します）",
     busy: false,
     previewTimer: null,
   };
@@ -104,6 +105,13 @@
   function getExtension(filename) {
     const idx = filename.lastIndexOf(".");
     return idx >= 0 ? filename.slice(idx).toLowerCase() : "";
+  }
+
+  function getCanvasFont(fontSize) {
+    if (state.fontFamily) {
+      return `${fontSize}px "${state.fontFamily}", ${DEFAULT_FONT_STACK}`;
+    }
+    return `${fontSize}px ${DEFAULT_FONT_STACK}`;
   }
 
   async function loadFont(file) {
@@ -211,7 +219,7 @@
   }
 
   function computeLayout(ctx, lines, options) {
-    ctx.font = `${options.fontSize}px "${state.fontFamily}", sans-serif`;
+    ctx.font = getCanvasFont(options.fontSize);
     const lineAdvance = options.fontSize * options.lineHeight;
 
     let maxLeft = 0;
@@ -303,7 +311,7 @@
     canvas.height = layout.canvasHeight;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = `${options.fontSize}px "${state.fontFamily}", sans-serif`;
+    ctx.font = getCanvasFont(options.fontSize);
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
 
@@ -393,11 +401,6 @@
       return null;
     }
 
-    if (!state.fontFamily) {
-      setStatus("フォントを読み込んでください。", true);
-      return null;
-    }
-
     const text = el.textInput.value;
     if (!text.trim()) {
       setStatus("文字を入力してください。", true);
@@ -480,9 +483,6 @@
   function schedulePreview() {
     clearTimeout(state.previewTimer);
     state.previewTimer = window.setTimeout(() => {
-      if (!state.fontFamily) {
-        return;
-      }
       if (!el.textInput.value.trim()) {
         return;
       }
@@ -601,7 +601,7 @@
     bindEvents();
     syncColorMode();
     el.charCount.textContent = "0";
-    setStatus("フォントを読み込み、文字を入力してください。", false);
+    setStatus("文字を入力してください。フォント未読込時は既定フォントで描画します。", false);
   }
 
   init();
