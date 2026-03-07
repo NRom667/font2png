@@ -315,19 +315,56 @@
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
 
-    if (options.shadowEnabled) {
-      ctx.shadowColor = hexToRgba(options.shadowColor, options.shadowAlpha);
-      ctx.shadowBlur = options.shadowBlur;
-      ctx.shadowOffsetX = options.shadowOffsetX;
-      ctx.shadowOffsetY = options.shadowOffsetY;
-    } else {
-      ctx.shadowColor = "rgba(0,0,0,0)";
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-    }
-
     const fillStyle = createFillStyle(ctx, options, layout);
+
+    // Draw shadow on a dedicated layer first, then punch out glyph pixels.
+    // This preserves the visual order: front(text) -> outline -> back(shadow).
+    if (options.shadowEnabled && options.shadowAlpha > 0) {
+      const shadowCanvas = document.createElement("canvas");
+      shadowCanvas.width = canvas.width;
+      shadowCanvas.height = canvas.height;
+      const shadowCtx = shadowCanvas.getContext("2d");
+      if (shadowCtx) {
+        shadowCtx.font = ctx.font;
+        shadowCtx.textAlign = "left";
+        shadowCtx.textBaseline = "alphabetic";
+        shadowCtx.lineJoin = "round";
+        shadowCtx.lineCap = "round";
+        shadowCtx.lineWidth = options.outlineEnabled ? options.outlineWidth : 0;
+        shadowCtx.fillStyle = "rgba(0, 0, 0, 1)";
+        shadowCtx.strokeStyle = "rgba(0, 0, 0, 1)";
+        shadowCtx.shadowColor = hexToRgba(options.shadowColor, options.shadowAlpha);
+        shadowCtx.shadowBlur = options.shadowBlur;
+        shadowCtx.shadowOffsetX = options.shadowOffsetX;
+        shadowCtx.shadowOffsetY = options.shadowOffsetY;
+
+        for (let i = 0; i < lines.length; i += 1) {
+          const line = lines[i];
+          const y = layout.originY + i * layout.lineAdvance;
+          if (options.outlineEnabled && options.outlineWidth > 0) {
+            shadowCtx.strokeText(line, layout.originX, y);
+          }
+          shadowCtx.fillText(line, layout.originX, y);
+        }
+
+        shadowCtx.shadowColor = "rgba(0,0,0,0)";
+        shadowCtx.shadowBlur = 0;
+        shadowCtx.shadowOffsetX = 0;
+        shadowCtx.shadowOffsetY = 0;
+        shadowCtx.globalCompositeOperation = "destination-out";
+        for (let i = 0; i < lines.length; i += 1) {
+          const line = lines[i];
+          const y = layout.originY + i * layout.lineAdvance;
+          if (options.outlineEnabled && options.outlineWidth > 0) {
+            shadowCtx.strokeText(line, layout.originX, y);
+          }
+          shadowCtx.fillText(line, layout.originX, y);
+        }
+        shadowCtx.globalCompositeOperation = "source-over";
+
+        ctx.drawImage(shadowCanvas, 0, 0);
+      }
+    }
 
     if (options.outlineEnabled && options.outlineWidth > 0) {
       ctx.lineJoin = "round";
@@ -335,6 +372,10 @@
       ctx.lineWidth = options.outlineWidth;
       ctx.strokeStyle = hexToRgba(options.outlineColor, options.outlineAlpha);
     }
+    ctx.shadowColor = "rgba(0,0,0,0)";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
 
     for (let i = 0; i < lines.length; i += 1) {
       const line = lines[i];
