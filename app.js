@@ -2,11 +2,11 @@
   "use strict";
 
   const MAX_CHARS = 2000;
-  const DEFAULT_FONT_STACK = "\"Yu Gothic UI\", \"Yu Gothic\", \"Hiragino Kaku Gothic ProN\", \"Meiryo\", sans-serif";
+  const DEFAULT_FONT_STACK = "\"Noto Sans JP\", \"Yu Gothic UI\", \"Yu Gothic\", \"Hiragino Kaku Gothic ProN\", \"Meiryo\", sans-serif";
   const state = {
     fontFamily: "",
     fontFileName: "",
-    fontStatus: "未読み込み（デフォルトのフォントで描画します）",
+    fontStatus: "未読み込み（Noto Sans JP Boldで描画します）",
     busy: false,
     previewTimer: null,
   };
@@ -111,7 +111,7 @@
     if (state.fontFamily) {
       return `${fontSize}px "${state.fontFamily}", ${DEFAULT_FONT_STACK}`;
     }
-    return `${fontSize}px ${DEFAULT_FONT_STACK}`;
+    return `700 ${fontSize}px ${DEFAULT_FONT_STACK}`;
   }
 
   async function loadFont(file) {
@@ -642,7 +642,7 @@
     bindEvents();
     syncColorMode();
     el.charCount.textContent = "0";
-    setStatus("文字を入力してください。フォント未読込時は既定フォントで描画します。", false);
+    setStatus("文字を入力してください。フォント未読込時はNoto Sans JP Boldで描画します。", false);
   }
 
   init();

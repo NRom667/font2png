@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>テキスト画像化ツール font2png</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <meta name="description" content="フォントを簡単にpng画像化するツール。CanvaやAdobe Expressで使える透過PNGを生成できます。手持ちのフォントを読み込んで、グラデーション、縁取り、影を設定し、ダウンロード可能。" />
 </head>
@@ -23,7 +26,7 @@
         <br><br><span>※windowsの場合、インストール済みのフォントは通常C:\Windows\Fontsに保存されています</span>
       </label>
       <div class="font-meta">
-        <p><strong>状態:</strong> <span id="font-status">未読み込み（デフォルトのフォントで描画します）</span></p>
+        <p><strong>状態:</strong> <span id="font-status">未読み込み（Noto Sans JP Boldで描画します）</span></p>
         <p><strong>ファイル名:</strong> <span id="font-filename">-</span></p>
       </div>
     </section>
